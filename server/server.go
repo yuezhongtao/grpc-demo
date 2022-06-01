@@ -176,11 +176,17 @@ func main() {
 		}
 		opts = []grpc.ServerOption{grpc.Creds(creds)}
 	}
+
 	grpcServer := grpc.NewServer(opts...)
 
 	pb.RegisterRouteGuideServer(grpcServer, newServer())
+	log.Printf("start server ....")
 
-	panic(grpcServer.Serve(lis))
+	err = grpcServer.Serve(lis)
+	if err != nil {
+		log.Fatalf(err.Error())
+		return
+	}
 
 }
 
@@ -787,5 +793,3 @@ var exampleData = []byte(`[{
     },
     "name": "3 Hasta Way, Newton, NJ 07860, USA"
 }]`)
-
-
